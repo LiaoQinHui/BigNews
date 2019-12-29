@@ -1,43 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>大事件-后台登录页</title>
+    <link rel="stylesheet" type="text/css" href="css/reset.css" />
+    <link rel="stylesheet" type="text/css" href="css/iconfont.css" />
+    <link rel="stylesheet" type="text/css" href="css/main.css" />
+    <!-- 引入bootstrap的css文件 -->
+    <link rel="stylesheet" href="./libs/bootstrap/css/bootstrap.min.css" />
+    <!-- 引入jq文件 -->
+    <script src="./libs/jquery-1.12.4.min.js"></script>
+    <!-- 引入bootstrap的js文件 -->
+    <script src="./libs/bootstrap/js/bootstrap.min.js"></script>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-  <title>大事件-后台登录页</title>
-  <link rel="stylesheet" type="text/css" href="css/reset.css" />
-  <link rel="stylesheet" type="text/css" href="css/iconfont.css" />
-  <link rel="stylesheet" type="text/css" href="css/main.css" />
-  <!-- 引入bootstrap的css文件 -->
-  <link rel="stylesheet" href="./libs/bootstrap/css/bootstrap.min.css" />
-  <!-- 引入jq文件 -->
-  <script src="./libs/jquery-1.12.4.min.js"></script>
-  <!-- 引入bootstrap的js文件 -->
-  <script src="./libs/bootstrap/js/bootstrap.min.js"></script>
-</head>
+  <body>
+    <div class="main_wrap">
+      <div class="header">
+        <a href="#" class="logo"><img src="images/logo.png" alt=""/></a>
+        <div class="copyright">
+          CopyRight © 2019 深圳百秀信息技术股份有限公司<br />All Rights Reserved
+        </div>
+      </div>
 
-<body>
-  <div class="main_wrap">
-    <div class="header">
-      <a href="#" class="logo"><img src="images/logo.png" alt="" /></a>
-      <div class="copyright">
-        CopyRight © 2019 深圳百秀信息技术股份有限公司<br />All Rights Reserved
+      <div class="login_form_con">
+        <div class="login_title"></div>
+        <form class="login_form">
+          <i class="iconfont icon-user"></i>
+          <i class="iconfont icon-key"></i>
+          <input type="text" class="input_txt" placeholder="邮箱/手机号" />
+          <input type="password" class="input_pass" placeholder="密码" />
+          <input type="submit" class="input_sub" value="登 录" />
+        </form>
       </div>
     </div>
+    <script>
+      $(function() {
+        // 给login_form注册提交事件
+        $(".login_form").submit(function(e) {
+          // 阻止默认行为，因为我们需要验证用户输入内容是否正确
+          e.preventDefault();
+          // 获取用户名和密码
 
-    <div class="login_form_con">
-      <div class="login_title"></div>
-      <form class="login_form">
-        <i class="iconfont icon-user"></i>
-        <i class="iconfont icon-key"></i>
-        <input type="text" class="input_txt" placeholder="邮箱/手机号" />
-        <input type="password" class="input_pass" placeholder="密码" />
-        <input type="submit" class="input_sub" value="登 录" />
-      </form>
-    </div>
-  </div>
-
-</body>
-
+          const input_txt = $(".input_txt")
+            .val()
+            .trim();
+          const input_pass = $(".input_pass")
+            .val()
+            .trim();
+          // 判断用户是否输入账户密码为空
+          if (input_txt === "" || input_pass === "") {
+            alert("用户密码不能为空");
+            return;
+          }
+          // 发起Ajax、请求
+          $.ajax({
+            // 请求方式
+            type: "post",
+            // 请求地址
+            url: " http://192.168.77.35:8080/api/v1/admin/user/login",
+            // 请求参数
+            data: {
+              username: input_txt,
+              password: input_pass
+            },
+            // 参数类型
+            dataType: "json",
+            // 请求成功的回调函数
+            success: function(response) {
+              //  获取后台返回的code msg token 数据
+              const code = response.code;
+              const msg = response.msg;
+              const token = response.token;
+              // 登录成功返回200，用于判断分支
+              if (code === 200) {
+                // alert(msg);
+                // 把token保存到浏览器本地存储
+                localStorage.setItem("token", token);
+                // 跳转后台管理系统首页
+                location.href = "./index.html";
+              }
+              // else {
+              //   alert(msg);
+              // }
+            }
+          });
+        });
+      });
+    </script>
+  </body>
 </html>
