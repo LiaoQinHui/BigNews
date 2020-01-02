@@ -14,7 +14,7 @@
   });
 
   //   url封装
-  const baseURL = "http://192.168.77.45:8080/api/v1";
+  const baseURL = "http://192.168.77.53:8080/api/v1";
   const urls = {
     //   获取用户信息
     userInfo: baseURL + "/admin/user/info",

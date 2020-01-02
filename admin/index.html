@@ -107,6 +107,13 @@
             $(".user_info span").html("欢迎大佬:" + nickname);
           }
         });
+        // 退回登录功能
+        $(".logout").click(function() {
+          // token删除
+          localStorage.removeItem("token");
+          // 跳转页面login.html
+          window.location.href = "login.html";
+        });
       });
     </script>
   </body>
