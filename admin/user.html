@@ -148,7 +148,7 @@
         //   功能3：修改用户信息
         $("#form").submit(function(e) {
           e.preventDefault();
-          const fdObj = new FormData(htis);
+          const fdObj = new FormData(this);
           $.ajax({
             type: "post",
             url: urls.userEdit,
