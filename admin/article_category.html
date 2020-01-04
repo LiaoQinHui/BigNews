@@ -102,6 +102,8 @@
       $.ajax({
         url:urls.category_list,
         success:function(response){
+            console.log(response);
+            
             //  获取到data核心数据列表
             const data=response.data;
             // art-template模板库
@@ -185,7 +187,29 @@
             });
 
             // 点击删除
-         
+            $('tbody').on('click', '.btn-danger', function () {
+                console.log($(this).attr('data-id'));
+                
+                $.ajax({
+                    url: urls.article_delete,
+                    type: 'post',
+                    dataType: 'json',
+                    data: {
+                        id: $(this).attr('data-id')
+                 },
+        success: function (backData) {
+            console.log(backData);
+            
+            if (backData.code == 204) {
+                alert('删除成功');
+              location.reload()
+            } else {
+                alert(backData.msg);
+            };
+        }
+    });
+});
+                 
 });
 
 </script>
